@@ -1,8 +1,8 @@
 import { takeEvery, call, put } from 'redux-saga/effects';
 
-import { getTodos, createTodo, finishTodo } from './api';
+import { getTodos, createTodo, finishTodo, removeTodo } from './api';
 
-import { REQUEST_ADD_ITEM, REQUEST_TODOS, REQUEST_FINISH_TODO, recieveAddItem, recieveTodos, recieveFinishTodo } from './actions';
+import { REQUEST_ADD_ITEM, REQUEST_TODOS, REQUEST_FINISH_TODO , REQUEST_REMOVE_TODO, recieveAddItem, recieveTodos, recieveFinishTodo, recieveRemoveTodo } from './actions';
 
 function* callRequestAddItem(action) {
     let results = yield call(createTodo, action.payload);
@@ -31,5 +31,15 @@ function* callRequestFinishTodo(action){
 }
 
 export function* requestFinishTodoSaga(){
-    yield takeEvery(REQUEST_FINISH_TODO, callRequestFinishTodo)
+    yield takeEvery(REQUEST_FINISH_TODO, callRequestFinishTodo);
+}
+
+function* callRequestRemoveTodo(action) {
+    let results = yield call(removeTodo, action.payload);
+
+    yield put(recieveRemoveTodo(results));
+}
+
+export function* requestRemoveTodo(){
+    yield takeEvery(REQUEST_REMOVE_TODO, callRequestRemoveTodo);
 }

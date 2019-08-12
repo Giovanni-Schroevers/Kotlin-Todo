@@ -6,6 +6,7 @@ import {
   requestAddItem,
   requestTodos,
   requestFinishTodo,
+  requestRemoveTodo,
 } from '../modules/ui/actions';
 
 class Todos extends Component {
@@ -20,32 +21,43 @@ class Todos extends Component {
   }
 
   addTodo = () => {
+
     this.props.requestAddItem({
         title: this.state.title,
         description: this.state.description
       });
-    this.forceUpdate();
+      window.location.reload()
   }
 
   finishTodo = id => {
     this.props.requestFinishTodo(id);
+    window.location.reload()
+  }
+
+  removeTodo = id => {
+    this.props.requestRemoveTodo(id);
+    window.location.reload()
   }
 
   render() {
     return (
       <div className="todo">
-        <input name="title" onChange={this.textChanged}></input>
-        <input name="description" onChange={this.textChanged}></input>
-        <button onClick={this.addTodo}>Add todo</button>
+        <div className="todo__form">
+          <input className="form__input" name="title" onChange={this.textChanged}></input>
+          <input className="form__input" name="description" onChange={this.textChanged}></input>
+          <button className="form__button" onClick={this.addTodo}>Add todo</button>
+        </div>
 
         {this.props.itemsError && <div className="todo__error">Error while adding todo</div>}
 
         {this.props.todos && this.props.todos.data.map((todo, key) => {
-          return <div className={"todo__item" + (todo.done && "todo__item--done")} key={key}>
-            <h3>{todo.title}</h3>
-            <p>{todo.description}</p>
-            {!todo.done && <button onClick={() => this.finishTodo(todo.id)}>Done</button>}
-            <button>Remove</button>
+          return <div className={"todo__item " + (todo.done ? "todo__item--done" : "")} key={key}>
+            <h3 className="item__title">{todo.title}</h3>
+            <p className="item__description">{todo.description}</p>
+            <div className="item__buttons">
+              {!todo.done && <button className="item__button" onClick={() => this.finishTodo(todo.id)}>Done</button>}
+              <button className="item__button" onClick={() => this.removeTodo(todo.id)}>Remove</button>
+            </div>
           </div>
         })}
       </div>
@@ -67,7 +79,8 @@ function mapDispatchToProps(dispatch){
     ...bindActionCreators({
       requestAddItem,
       requestTodos,
-      requestFinishTodo
+      requestFinishTodo,
+      requestRemoveTodo
     }, dispatch)
   }
 }

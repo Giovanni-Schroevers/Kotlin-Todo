@@ -1,9 +1,9 @@
 import React from 'react';
 import { Provider } from 'react-redux'
 
-import './App.css';
+import './App.scss';
 import Todos from './redux';
-import store from './store'
+import store from './store';
 
 function App() {
   return (

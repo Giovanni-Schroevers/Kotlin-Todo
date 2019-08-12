@@ -32,3 +32,13 @@ export async function finishTodo(id){
     return error;
   })
 }
+
+export async function removeTodo(id){
+  return await axios.delete(`http://localhost:8080/api/todo/${id}`)
+  .then(function(response){
+    return response;
+  })
+  .catch(function(error){
+    return error;
+  })
+}
